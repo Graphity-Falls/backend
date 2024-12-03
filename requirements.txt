@@ -1,6 +1,7 @@
 django
 gunicorn
-whitenoise
 psycopg2-binary
 requests
+sparqlwrapper
 urllib3
+whitenoise
