@@ -4,7 +4,7 @@ from django.http import (
     HttpResponse, HttpResponseNotFound
 )
 
-from query.sparql import SPARQL
+from query.sparql import SPARQL, SPARQL_WIKIDATA
 
 
 def list_entities(request):
