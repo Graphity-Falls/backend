@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-r#+!kopo6_^+vsuy^+@!h1-&0shrdo0qcubw@2vq8x@4o52=e7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost,127.0.0.1,https://graphity-falls-frontend.vercel.app/']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
