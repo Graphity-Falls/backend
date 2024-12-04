@@ -1,3 +1,5 @@
+import json
+
 from django.http import (
     HttpResponse, HttpResponseNotFound
 )
@@ -5,28 +7,36 @@ from django.http import (
 from query.sparql import SPARQL
 
 
-def list_characters(request):
+def list_entities(request):
     if request.method == 'GET':
         q = SPARQL()
-        query = q.prefix + """
-SELECT ?entity 
-WHERE {
-    ?entity a :Character .
-}
-LIMIT 10
-"""
-        print(query)
+        query = q.prefix + f'''
+SELECT ?entity ?entType ?entLabel
+WHERE {{
+    ?entity a ?entType \.
+    ?entity rdfs:label ?entLabel .
+}}
+'''
+    # FILTER (CONTAINS(LCASE(?entLabel), "{filter.lower()}"))
         resp = q.execute(query)
-        return HttpResponse(resp)
+        return HttpResponse(
+            json.dumps(resp),
+            content_type='application/json'
+        )
+    return HttpResponseNotFound
 
-def get_character(request):
+def get_entity(request, filter):
     if request.method == 'GET':
-        pass
-
-def list_episodes(request):
-    if request.method == 'GET':
-        pass
-
-def get_episode(request):
-    if request.method == 'GET':
-        pass
+        q = SPARQL()
+        query = q.prefix + f'''
+SELECT ?p ?o
+WHERE {{
+    :{filter} ?p ?o 
+}}
+'''
+        resp = q.execute(query)
+        return HttpResponse(
+            json.dumps(resp),
+            content_type='application/json'
+        )
+    return HttpResponseNotFound
