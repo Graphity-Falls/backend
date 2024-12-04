@@ -27,14 +27,25 @@ def get_wiki(request):
     if request.method == 'GET':
         q = SPARQL_WIKIDATA()
         query = q.prefix + """
-SELECT ?person ?personLabel WHERE {
-  ?person rdfs:label "Tom Kenny"@en.
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-"""
+        SELECT ?person ?personLabel ?wikipedia WHERE {
+            ?person rdfs:label "Tom Kenny"@en.
+            ?person wdt:P800 wd:Q1091397.
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        }
+        
+        """
         print(query)
         resp = q.execute(query)
-        return HttpResponse(resp)
+        
+        # Extract the Wikipedia URL and person label from the response
+        if resp:
+            person_label = resp[0]['personLabel']['value']
+            wikipedia_url = resp[0]['person']['value']
+            response_data = f"Name: {person_label}, Wikipedia: {wikipedia_url}"
+            return HttpResponse(response_data)
+        else:
+            return HttpResponse("No data found.")
+
 
 
 def list_episodes(request):
