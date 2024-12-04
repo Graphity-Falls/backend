@@ -10,4 +10,5 @@ urlpatterns = [
     path('characters/<str:label>', get_character),
     path('episodes/', list_episodes),
     path('episodes/<str:label>', get_episode),
+    path('wikidata/', get_wiki),
 ]

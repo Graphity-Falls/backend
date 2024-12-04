@@ -32,6 +32,31 @@ PREFIX v: <http://project.org/vocab#>
         except Exception as e:
             return str(e)
 
+class SPARQL_WIKIDATA:
+    def __init__(self):
+        self.graphdb_url = "https://query.wikidata.org/sparql"
+        self.sparql = SPARQLWrapper(self.graphdb_url)
+        self.sparql.setReturnFormat(JSON)
+        self.prefix = """
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wds: <http://www.wikidata.org/prop/statement/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+"""
+
+    def execute(self, query: str) -> Any:
+        """Executes given query to GraphDB."""
+        self.sparql.setQuery(query)
+        try:
+            ret = self.sparql.queryAndConvert()
+            return ret['results']['bindings']
+        except Exception as e:
+            return str(e)
+
     # def select(self, columns: dict) -> Self:
     #     """TODO: append select with columns to query template."""
     #     return self
