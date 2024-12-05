@@ -122,6 +122,7 @@ def get_entity(request, filter):
                 # Check if the object is a literal (person's name)
                 if isinstance(object_value, dict) and object_value.get("type") == "literal":
                     person_name = object_value.get("value")
+                    escaped_person_name = escape_sparql_string(person_name)
 
                     # Query Wikidata to find the person URI by name
                     qw = SPARQL_WIKIDATA()
@@ -129,7 +130,7 @@ def get_entity(request, filter):
                     query_test = qw.prefix + f'''
                     SELECT ?person ?personLabel WHERE {{
                     # Search for the person by their name
-                    ?person rdfs:label "{person_name}"@en.
+                    ?person rdfs:label "{escaped_person_name}"@en.
 
                     # Check if the notable work is "SpongeBob SquarePants" (P800)
                     {{
@@ -154,6 +155,8 @@ def get_entity(request, filter):
                     }}
                     LIMIT 1
                     '''
+
+                    print(query_test)
                     
                     resp2 = qw.execute(query_test)
 
@@ -190,3 +193,9 @@ def get_entity(request, filter):
         )
     
     return HttpResponseNotFound
+
+
+def escape_sparql_string(value):
+    # Escape both single and double quotes by backslash
+    value = value.replace("\\", "\\\\").replace('"', '\\"').replace("'", "\\'")  
+    return value
