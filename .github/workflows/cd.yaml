@@ -1,6 +1,5 @@
 name: Service Deployment
 
-
 on:
   pull_request:
     types:
@@ -8,7 +7,6 @@ on:
   push:
     branches:
       - main
-  
 
 jobs:
   build-publish:
@@ -31,10 +29,11 @@ jobs:
     - name: Build & Publish Docker Image
       run: |
         docker build \
+            --build-arg GRAPHDB_URL=${{ secrets.GRAPHDB_URL }} \
+            --build-arg CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }} \
             -t ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} \
             .  
         docker push ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
-
 
   deploy:
     name: Deploy to service to GCP Compute Engine instance
@@ -59,4 +58,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ssh-key.pem ${{ secrets.GCP_USERNAME }}@${{ secrets.GCP_STATIC_IP }} "
             docker container rm -f ${{ secrets.CONTAINER_NAME }} || true &&
             docker image rm -f ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} || true &&
-            docker run --name ${{ secrets.CONTAINER_NAME }} -d -p 8000:8000 --restart unless-stopped ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}"
+            docker run --name ${{ secrets.CONTAINER_NAME }} -d -p 8000:8000 --restart unless-stopped \
+            -e GRAPHDB_URL=${{ secrets.GRAPHDB_URL }} \
+            -e CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }} \
+            ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}"

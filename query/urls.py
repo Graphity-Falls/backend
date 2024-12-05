@@ -6,6 +6,6 @@ from query.views import *
 app_name = 'query'
 
 urlpatterns = [
-    path('entities/', list_entities),
-    path('entities/<str:filter>', get_entity),
+    path('entities/<str:filter>', list_entities),
+    path('entity/<str:filter>', get_entity),
 ]

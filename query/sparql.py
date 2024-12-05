@@ -16,12 +16,12 @@ class SPARQL:
         self.sparql = SPARQLWrapper(self.graphdb_url)
         self.sparql.setReturnFormat(JSON)
         self.prefix = """
-PREFIX : <http://project.org/data/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX v: <http://project.org/vocab#>
-"""
+        PREFIX : <http://project.org/data/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX v: <http://project.org/vocab#>
+        """
 
     def execute(self, query: str) -> Any:
         """Executes given query to GraphDB."""
@@ -39,15 +39,15 @@ class SPARQL_WIKIDATA:
         self.sparql = SPARQLWrapper(self.graphdb_url)
         self.sparql.setReturnFormat(JSON)
         self.prefix = """
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-PREFIX wds: <http://www.wikidata.org/prop/statement/>
-PREFIX p: <http://www.wikidata.org/prop/>
-PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX bd: <http://www.bigdata.com/rdf#>
-"""
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+        PREFIX wds: <http://www.wikidata.org/prop/statement/>
+        PREFIX p: <http://www.wikidata.org/prop/>
+        PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        PREFIX bd: <http://www.bigdata.com/rdf#>
+        """
 
     def execute(self, query: str) -> Any:
         """Executes given query to GraphDB."""
