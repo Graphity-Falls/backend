@@ -1,6 +1,10 @@
 django
+django-cors-headers
 gunicorn
-whitenoise
 psycopg2-binary
 requests
+sparqlwrapper
 urllib3
+whitenoise
+python-dotenv
+sparqlwrapper
