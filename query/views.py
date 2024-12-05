@@ -29,10 +29,10 @@ def get_wiki(request):
         query = q.prefix + """
         SELECT ?person ?personLabel ?wikipedia WHERE {
             ?person rdfs:label "Tom Kenny"@en.
-            ?person wdt:P800 wd:Q1091397.
+            ?person wdt:P800 ?work.  # Get the notable work
+            ?work rdfs:label "SpongeBob SquarePants"@en.
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
         }
-        
         """
         print(query)
         resp = q.execute(query)
